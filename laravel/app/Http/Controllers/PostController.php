@@ -91,4 +91,24 @@ class PostController extends Controller
     {
         //
     }
+
+    public function remove(Request $request)
+    {
+        $id = $request->post_id;
+        $post = Post::find($id);
+
+        if(!$post){
+            return response()->json(['message' => 'Post Not Found']);
+        }
+
+        $request = Post::where('id', $id)->delete();
+
+        if(!$request){
+            return response()->json(['message' => 'Something went wrong'],500);
+        }
+
+        return response()->json([
+            'message' => 'Post deleted successfully'
+        ], 200);
+    }
 }

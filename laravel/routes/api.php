@@ -28,18 +28,18 @@ Route::middleware('auth:sanctum')->get('/user/posts', function (Request $request
 Route::group([UserController::class], function(){
         Route::post('/login', [UserController::class, 'login']);
         Route::post('/register', [UserController::class, 'register']);        
+        Route::post('/guest/register', [UserController::class, 'registerAsGuest']);
 });
 
 // Authenticated Routes
 Route::middleware('auth:sanctum')->group(function(){
     // user related
     Route::post('/logout', [UserController::class, 'logout']);
-    Route::post('/user/delete', [UserController::class, 'remove']);
-    Route::put('/user/update', [UserController::class, 'update']);
-
+    Route::delete('/user/delete', [UserController::class, 'remove'])->middleware(['auth', 'App\Http\Middleware\CheckRole:admin']);
+    Route::put('/user/update', [UserController::class, 'update'])->middleware(['auth', 'App\Http\Middleware\CheckRole:admin']);
     // post related
     Route::resource('posts', PostController::class);
     Route::get('/post/{id}/comments', [CommentsController::class, 'getComments']);
     Route::post('/post/{id}/comment', [CommentsController::class, 'postComment']);
-    Route::post('/post/delete', [PostController::class, 'remove']);
+    Route::delete('/post/delete', [PostController::class, 'remove'])->middleware(['auth', 'App\Http\Middleware\CheckRole:admin']);
 });
