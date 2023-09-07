@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,14 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 
 // Authentication Routes
-Route::controller(UserController::class)
-        ->group(function(){
-        Route::post('user/login', [UserController::class, 'login']);
-        Route::post('user/register', [UserController::class, 'register']);
-    });
+Route::group([UserController::class], function(){
+        Route::post('/login', [UserController::class, 'login']);
+        Route::post('/register', [UserController::class, 'register']);
+});
+
+// Authenticated Routes
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('/logout', [UserController::class, 'logout']);
+    Route::resource('post', UserController::class);
+});
