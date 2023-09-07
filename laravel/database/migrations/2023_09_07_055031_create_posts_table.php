@@ -16,9 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
+            $table->string('image_url')->nullable();
             $table->foreignIdFor(User::class);
             $table->timestamps();
-        });
+        });        
     }
 
     /**
