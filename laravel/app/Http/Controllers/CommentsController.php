@@ -29,7 +29,7 @@ class CommentsController extends Controller
         }
         $message = $request->message;
         $user_id = auth()->id();
-        $user_name = User::select('name')->where('id', $user_id)->first();
+        $user_name = User::where('id', $user_id)->value('name');
         $post_id = $post->id;
         $comment = Comment::create([
             'message' => $message,

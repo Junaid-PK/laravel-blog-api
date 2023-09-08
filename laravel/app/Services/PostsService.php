@@ -15,13 +15,13 @@ class PostsService
             'title' => $data['title'],
             'description' => $data['description'],
             'user_id' => $userId,
-            "image_url" => array_key_exists('image_url',$data)?$data['image_url']:'',
+            "image_url" => array_key_exists('image_url',$data)?$data['image_url']:null,
         ]);
 
         if($posts){
             return response()->json([
                 'message' => 'Post Created Successfully'
-            ],200);
+            ], 200);
         }
 
         return response()->json([
