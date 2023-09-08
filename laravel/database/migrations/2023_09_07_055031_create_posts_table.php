@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('image_url')->nullable();
-            $table->foreignIdFor(User::class);
+            $table->bigInteger('user_id');
+            $table->foreign ('user_id')->references ('id')->on ('users')->onDelete ('cascade'); 
             $table->timestamps();
         });        
     }
