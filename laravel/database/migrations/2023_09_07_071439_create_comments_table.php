@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->string('message');
+            $table->string('commented_by');
             $table->foreignIdFor(Post::class);
-            $table->foreignIdFor(User::class);
             $table->timestamps();
         });
     }

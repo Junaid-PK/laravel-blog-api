@@ -5,110 +5,37 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePostRequest;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Services\PostsService;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getPosts()
     {
-        $post = Post::all();        
-        return response()->json(['posts' => $post], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json(['posts' => Post::all()], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function createPost(CreatePostRequest $request, PostsService $postService)
     {        
-        $validated = $request->validate([
-            'title' => 'required',
-            'description' => 'required'
-        ]);
-        // $userId = auth()->id();
-
-        $posts = Post::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'user_id' => $request->user_id,
-            "image_url" => $request->image_url
-        ]);
-
-        if($posts){
-            return response()->json([
-                'message' => 'Post Created Successfully'
-            ],200);
-        }
-
-        return response()->json([
-            'message' => 'Something went Wrong'
-        ], 500);
+        $data = $request->validated();
+        return $postService->createNewPost($data);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function getPost(Request $request)
     {
-        $post = Post::find($id);
-
-        if(! $post){
-            return response()->json(['message' =>'No post Found'], 404);
-        }
-
-        return response()->json(['message' => $post]);
+        return response()->json(['post' => $request->post_id]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function deletePost(Request $request, PostsService $postService)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
-    public function remove(Request $request)
-    {
-        $id = $request->post_id;
-        $post = Post::find($id);
-
-        if(!$post){
-            return response()->json(['message' => 'Post Not Found']);
-        }
-
-        $request = Post::where('id', $id)->delete();
-
-        if(!$request){
-            return response()->json(['message' => 'Something went wrong'],500);
-        }
-
-        return response()->json([
-            'message' => 'Post deleted successfully'
-        ], 200);
+        return $postService->deletePost($request);
     }
 }
