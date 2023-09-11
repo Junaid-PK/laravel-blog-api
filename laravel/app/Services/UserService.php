@@ -81,7 +81,8 @@ class UserService
     }
 
 
-    public function logoutUser(){
+    public function logoutUser()
+    {
         auth()->user()->tokens()->delete();
         return response()->json(['message' => 'Logout Successfull'],200);
     }

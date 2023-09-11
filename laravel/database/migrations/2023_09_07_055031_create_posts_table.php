@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('image_url')->nullable();
-            $table->bigInteger('user_id');
+            $table->bigInteger('user_id',false,true);
             $table->foreign ('user_id')->references ('id')->on ('users')->onDelete ('cascade'); 
             $table->timestamps();
         });        

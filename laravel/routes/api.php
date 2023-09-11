@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([],
     function(){
         Route::post('/login', [UserController::class, 'login']);
-        Route::post('/register', [UserController::class, 'register']);        
+        Route::post('/register', [UserController::class, 'register']);
         Route::post('/guest/post/comment', [CommentsController::class, 'commentAsGuest']);
         Route::get('/guest/posts', [PostController::class, 'getPosts']);
 });

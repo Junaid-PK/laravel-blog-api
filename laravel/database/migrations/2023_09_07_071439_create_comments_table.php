@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('message');
             $table->string('commented_by');
-            $table->bigInteger('post_id');
+            $table->bigInteger('post_id',false,true);
             $table->foreign ('post_id')->references ('id')->on ('posts')->onDelete ('cascade'); 
             $table->timestamps();
         });
